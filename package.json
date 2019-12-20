@@ -1,0 +1,18 @@
+{
+  "name": "passport-mongo-express",
+  "version": "1.0.0",
+  "description": "Tutorial for passport",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Milind712000",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-async-handler": "^1.1.4",
+    "mongoose": "^5.7.5",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7"
+  }
+}
