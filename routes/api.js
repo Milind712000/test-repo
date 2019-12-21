@@ -19,6 +19,23 @@ router.post('/post', (req, res) => {
 	});
 });
 
+router.post('/postPotholes', async (req, res) => {
+
+	const potholes = req.body;
+
+	for (let i = 0; i < potholes.length; i++) {
+		const ele = potholes[i];
+		let jerk = new Jerks({
+			'yacc' : ele.yacc,
+			'lat' : ele.lat,
+			'lon' : ele.lon
+		});
+		await Jerks.create(jerk);
+	}
+
+	res.send("potholes stored");
+});
+
 router.get('/all', (req, res) => {
 	Jerks.find({}).then(data => {
 		res.json(data);
