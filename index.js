@@ -8,7 +8,11 @@ const cors = require('fastify-cors');
 const SampleService = require('./sample/service')
 const UserService = require('./Auth/service')
 const RideService = require('./rides/service')
-
+const fastify = require('fastify')({
+	logger: {
+		level: 'debug',
+	}
+})
 // declaring schemas
 const {
 	env: envSchema,
@@ -17,6 +21,7 @@ const {
 
 // connecting to db
 async function connectToDatabases(fastify) {
+	console.log(fastify.config)
 	fastify.register(mongodb, {
 		forceClose: true,
 		url: fastify.config.MONGO_CONNECTION_STRING
@@ -33,11 +38,11 @@ async function setupAuth(fastify) {
 		await request.jwtVerify()
 	})
 
-	fastify.decorate("adminsOnly", function({user}, reply, done) {
-		if(user && user.isAdmin) {
+	fastify.decorate("adminsOnly", function ({ user }, reply, done) {
+		if (user && user.isAdmin) {
 			done();
 			return true;
-		}else{
+		} else {
 			done(Error("Unauthorized attempt to access admin route"));
 			return false;
 		}
@@ -70,5 +75,22 @@ module.exports = async function (fastify, opts) {
 		.register(fp(decorateFastifyInstance))
 		.register(require('./Auth'), { prefix: '/auth' })
 		.register(require('./rides'), { prefix: '/ride' })
-		// .register(require('./sample'), { prefix: '/s' })
+	// .register(require('./sample'), { prefix: '/s' })
 }
+
+fastify.register(swagger, swaggerOption)
+	.register(cors, {})
+	.register(env, { schema: envSchema, dotenv: true }).after(err => { if (err) throw err })
+	.register(fp(connectToDatabases))
+	.register(fp(setupAuth))
+	.register(fp(decorateFastifyInstance))
+	.register(require('./Auth'), { prefix: '/auth' })
+	.register(require('./rides'), { prefix: '/ride' })
+
+fastify.listen(process.env.PORT || 9000, '0.0.0.0', function (err, address) {
+	if (err) {
+		fastify.log.error(err)
+		process.exit(1)
+	}
+	fastify.log.info(`server listening on ${address}`)
+})
