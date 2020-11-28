@@ -1,12 +1,10 @@
 const env = {
     type : 'object',
-    require : [ 
-        'FASTIFY_PORT', 
+    require : [
         'MONGO_CONNECTION_STRING', 
         'ACCESS_TOKEN_SECRET_KEY', 
         'GUEST_TOKEN_SECRET_KEY'],
     properties: {
-      FASTIFY_PORT : {type : 'integer'},
       MONGO_CONNECTION_STRING : { type : 'string' },
       ACCESS_TOKEN_SECRET_KEY : { type : 'string' },
       GUEST_TOKEN_SECRET_KEY : { type : 'string' }
