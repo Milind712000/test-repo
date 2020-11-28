@@ -9,7 +9,7 @@ const env = {
       ACCESS_TOKEN_SECRET_KEY : { type : 'string' },
       GUEST_TOKEN_SECRET_KEY : { type : 'string' }
     },
-    additionalProperties: false
+    additionalProperties: true
   };
   
   const swaggerOption = {
@@ -19,12 +19,12 @@ const env = {
         description: 'Testing the APIs',
         version: '2.0.0'
       },
-      host: 'localhost:3000',
       schemes: ['http'],
       consumes: ['application/json'],
       produces: ['application/json']
     },
-    exposeRoute: true
+    exposeRoute: true,
+    additionalProperties : true
   }
   
   module.exports = {
